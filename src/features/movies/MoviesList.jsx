@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import MovieCard from "./components/MovieCard";
+import { asyncState } from "../../constants/common";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading/Loading";
-import { asyncState } from "../../constants/common";
-import formatDate from "../../lib/date";
-import { getImageUrl } from "../../services/tmdb";
-import MovieCard from "./components/MovieCard";
 import { fetchMovies, getMovies, getMoviesStatus } from "./moviesSlice";
 
 const MoviesList = (props) => {
@@ -13,8 +11,12 @@ const MoviesList = (props) => {
   const status = useSelector(getMoviesStatus);
 
   useEffect(() => {
+    if (status !== asyncState.idle) {
+      return;
+    }
+
     dispatch(fetchMovies());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="text-left">
@@ -22,7 +24,7 @@ const MoviesList = (props) => {
       {status === asyncState.pending ? (
         <ul className="loading--horizontal">
           {Array.from({ length: 5 }).map((_, index) => (
-            <li className="text-left">
+            <li className="text-left" key={index}>
               <Loading key={index} height={250} width={150} />
               <Loading
                 key={index}
