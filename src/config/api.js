@@ -7,5 +7,8 @@ export default {
       upcoming: "/movie/upcoming",
       trending: "/movie/trending",
     },
+    search: {
+      keyword: "/search/multi",
+    },
   },
 };
